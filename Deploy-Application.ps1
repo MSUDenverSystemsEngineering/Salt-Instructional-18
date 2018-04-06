@@ -182,10 +182,10 @@ Try {
 		}
 
 		# <Perform Uninstallation tasks here>
-			Execute-Process -Path "$envProgramFilesX86\SALT Software\SALT PDF\unInstpw64.exe" -Parameters "/uninstall /s"
-			Execute-MSI -Action 'Uninstall' -Path "$dirFiles\WinSalt18Instructional.msi" -Parameters "/qn"
+		Execute-Process -Path "$envProgramFilesX86\SALT Software\SALT PDF\unInstpw64.exe" -Parameters "/uninstall /s"
+		Execute-MSI -Action 'Uninstall' -Path "$dirFiles\WinSalt18Instructional.msi" -Parameters "/qn"
 
-			Remove-Folder -Path "$envProgramFilesX86\SALT Software"
+		Remove-Folder -Path "$envProgramFilesX86\SALT Software"
 
 		##*===============================================
 		##* POST-UNINSTALLATION
