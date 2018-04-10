@@ -69,7 +69,7 @@ Try {
 	[string]$appRevision = '01'
 	[string]$appScriptVersion = '1.0.0'
 	[string]$appScriptDate = '03/05/2018'
-	[string]$appScriptAuthor = 'Reuth'
+	[string]$appScriptAuthor = 'Reuther'
 	##*===============================================
 	## Variables: Install Titles (Only set here to override defaults set by the toolkit)
 	[string]$installName = ''
@@ -182,10 +182,10 @@ Try {
 		}
 
 		# <Perform Uninstallation tasks here>
-			Execute-Process -Path "$envProgramFilesX86\SALT Software\SALT PDF\unInstpw64.exe" -Parameters "/uninstall /s"
-			Execute-MSI -Action 'Uninstall' -Path "$dirFiles\WinSalt18Instructional.msi" -Parameters "/qn"
+		Execute-Process -Path "$envProgramFilesX86\SALT Software\SALT PDF\unInstpw64.exe" -Parameters "/uninstall /s"
+		Execute-MSI -Action 'Uninstall' -Path "$dirFiles\WinSalt18Instructional.msi" -Parameters "/qn"
 
-			Remove-Folder -Path "$envProgramFilesX86\SALT Software"
+		Remove-Folder -Path "$envProgramFilesX86\SALT Software"
 
 		##*===============================================
 		##* POST-UNINSTALLATION

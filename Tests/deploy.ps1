@@ -9,6 +9,22 @@ $initParams = @{}
 ## Uncomment the next line for debugging
 ## $initParams.Add("Verbose", $true)
 
+## Define Functions
+Function SCCM-Module {
+  ## Import the ConfigurationManager.psd1 module
+  If ((Get-Module ConfigurationManager) -eq $null) {
+    Import-Module "$($Env:SMS_ADMIN_UI_PATH)\..\ConfigurationManager.psd1" @initParams
+  }
+
+  ## Connect to the site's drive if it is not already present
+  If ((Get-PSDrive -Name $Env:siteCode -PSProvider CMSite -ErrorAction SilentlyContinue) -eq $null) {
+    New-PSDrive -Name $Env:siteCode -PSProvider CMSite -Root $Env:siteServer @initParams
+  }
+
+  ## Set the active PSDrive to the ConfigMgr site code
+  Set-Location "$($Env:siteCode):\" @initParams
+}
+
 ## Set application properties
 $appName = $Env:APPVEYOR_PROJECT_NAME
 $appName = $appName -replace '-',' ' -replace '_',' '
@@ -57,18 +73,8 @@ Copy-Item -Path "$Env:APPLICATION_PATH\*" -Destination "$stagingDir\$appName\" -
 ## Set the application name as we want it to appear in Configuration Manager
 $appName = "Staging - $appName"
 
-## Import the ConfigurationManager.psd1 module
-If ((Get-Module ConfigurationManager) -eq $null) {
-  Import-Module "$($Env:SMS_ADMIN_UI_PATH)\..\ConfigurationManager.psd1" @initParams
-}
-
-## Connect to the site's drive if it is not already present
-If ((Get-PSDrive -Name $Env:siteCode -PSProvider CMSite -ErrorAction SilentlyContinue) -eq $null) {
-  New-PSDrive -Name $Env:siteCode -PSProvider CMSite -Root $Env:siteServer @initParams
-}
-
-## Set the active PSDrive to the ConfigMgr site code
-Set-Location "$($Env:siteCode):\" @initParams
+## Initialize CM Module and setup drive
+SCCM-Module
 
 ## Create the ConfigMgr application (if if doesn't exist) in the format "Staging - GitHub project name"
 ## This also adds a link to the GitHub repository in the Administrator Comments field for reference and checks the box next to "Allow this application to be installed from the Install Application task sequence action without being deployed"
